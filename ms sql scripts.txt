@@ -1,4 +1,4 @@
-----SERVER-----
+﻿----SERVER-----
 -- Имена сервера и экземпляра 
 Select @@SERVERNAME as [Server\Instance]; 
 -- версия SQL Server 
@@ -36,6 +36,22 @@ SELECT
 	,[estimated_completion_time] / 60000. AS [estimated_completion_time_min]
 FROM sys.dm_exec_requests
 WHERE command = 'BACKUP DATABASE'
+
+---USERS-----
+--- Сопостовление сидов на  кластере
+select U.Name, L.sid AS 'Login SID', U.sid AS 'USER SID' from sys.sql_logins AS L
+	JOIN sys.database_principals AS U
+		on l.name=u.name
+
+/*
+		IF  EXISTS (SELECT * FROM sys.server_principals WHERE name = N'monitoring')
+DROP LOGIN [monitoring]
+GO
+
+CREATE LOGIN [monitoringscom] WITH PASSWORD=N'sxfgehz571', DEFAULT_DATABASE=[master], DEFAULT_LANGUAGE=[us_english], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF, 
+SID = 0xA11DA1F628E0994A8EBE962DBD45FA0B
+GO
+*/
 
 
 
